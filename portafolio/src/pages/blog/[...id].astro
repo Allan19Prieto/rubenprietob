@@ -1,0 +1,52 @@
+---
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import BlogLayout from "../../layouts/BlogLayout.astro";
+
+export async function getStaticPaths() {
+  const articulos = await getCollection(
+    "blog",
+    ({ data }) => !data.borrador
+  );
+
+  return articulos.map((articulo) => ({
+    params: { id: articulo.id },
+    props: { articulo },
+  }));
+}
+
+interface Props {
+  articulo: CollectionEntry<"blog">;
+}
+
+const { articulo } = Astro.props;
+const { Content } = await render(articulo);
+
+const fecha = new Intl.DateTimeFormat("es-CR", {
+  dateStyle: "long",
+  timeZone: "UTC",
+}).format(articulo.data.fecha);
+---
+
+<BlogLayout
+  titulo={articulo.data.titulo}
+  descripcion={articulo.data.descripcion}
+>
+  <article>
+    <header>
+      <p class="etiqueta">Notas del camino</p>
+      <h1>{articulo.data.titulo}</h1>
+      <p>{articulo.data.descripcion}</p>
+
+      <time datetime={articulo.data.fecha.toISOString()}>
+        {fecha}
+      </time>
+    </header>
+
+    <div class="articulo">
+      <Content />
+    </div>
+  </article>
+
+  <a class="volver" href="/blog/">← Volver al blog</a>
+</BlogLayout>

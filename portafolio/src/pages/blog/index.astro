@@ -1,0 +1,52 @@
+---
+import { getCollection } from "astro:content";
+import BlogLayout from "../../layouts/BlogLayout.astro";
+
+const articulos = (
+  await getCollection("blog", ({ data }) => !data.borrador)
+).sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+
+const formatoFecha = new Intl.DateTimeFormat("es-CR", {
+  dateStyle: "long",
+  timeZone: "UTC",
+});
+---
+
+<BlogLayout
+  titulo="Notas del camino"
+  descripcion="Aprendizajes, proyectos y experiencias construyendo con tecnología."
+>
+  <p class="etiqueta">Blog personal</p>
+  <h1>Notas del camino</h1>
+
+  <p>
+    Comparto lo que construyo, las decisiones que tomo
+    y lo que aprendo durante el proceso.
+  </p>
+
+  <ul class="lista-articulos">
+    {
+      articulos.map((articulo) => (
+        <li>
+          <time datetime={articulo.data.fecha.toISOString()}>
+            {formatoFecha.format(articulo.data.fecha)}
+          </time>
+
+          <h2>
+            <a href={`/blog/${articulo.id}/`}>
+              {articulo.data.titulo} →
+            </a>
+          </h2>
+
+          <p>{articulo.data.descripcion}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  {
+    articulos.length === 0 && (
+      <p>Estoy preparando mis primeras publicaciones. Pronto habrá novedades.</p>
+    )
+  }
+</BlogLayout>

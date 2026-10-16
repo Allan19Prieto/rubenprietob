@@ -1,4 +1,7 @@
 ---
+import TarjetaProyecto from "../components/TarjetaProyecto.astro";
+import { proyectos } from "../data/proyectos";
+
 const secciones = [
 	{ id: "sobre-mi", nombre: "Sobre mí"},
 	{ id: "proyectos", nombre: "Proyectos"},
@@ -22,7 +25,7 @@ const secciones = [
       <aside class="perfil">
         <header>
           <h1>Allan Prieto</h1>
-          <a class="enlace-blog" href="#blog">Leer mi blog →</a>
+          <a class="enlace-blog" href="/blog/">Leer mi blog →</a>
 
           <p class="profesion">
             Desarrollador & creador de productos
@@ -70,16 +73,27 @@ const secciones = [
         </section>
 
         <section id="proyectos">
-          <h2>Proyectos & productos</h2>
-          <p>Aquí vamos a presentar los proyectos y su evolución.</p>
-        </section>
+			<div class="encabezado-proyectos">
+				<h2>Proyectos & productos</h2>
+				<span>Conceptos para explorar</span>
+			</div>
+
+			<div class="lista-proyectos">
+				{
+				proyectos.map((proyecto) => (
+					<TarjetaProyecto {...proyecto} />
+				))
+				}
+			</div>
+		</section>
 
         <section id="blog">
           <h2>Notas del camino</h2>
           <p>
-            Mi blog sobre tecnología, productos y aprendizajes.
-            Próximamente.
+            Comparto mis proyectos, aprendizajes y experiencias
+            creando con tecnología.
           </p>
+          <a href="/blog/">Explorar el blog →</a>
         </section>
 
         <section id="contacto">
@@ -263,4 +277,28 @@ const secciones = [
       scroll-behavior: auto;
     }
   }
+
+  .encabezado-proyectos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.encabezado-proyectos h2 {
+  margin: 0;
+}
+
+.encabezado-proyectos > span {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.lista-proyectos {
+  display: grid;
+  gap: 14px;
+}
 </style>

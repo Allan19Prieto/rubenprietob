@@ -1,0 +1,145 @@
+---
+interface Props {
+  nombre: string;
+  descripcion: string;
+  categoria: string;
+  estado: string;
+  icono: string;
+  color: string;
+}
+
+const {
+  nombre,
+  descripcion,
+  categoria,
+  estado,
+  icono,
+  color,
+} = Astro.props;
+---
+
+<article class="tarjeta">
+  <div class:list={["icono", color]} aria-hidden="true">
+    <svg
+      width="26"
+      height="26"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      {
+        icono === "documento" && (
+          <>
+            <path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z" />
+            <path d="M14 3v5h5M9 12h6M9 16h4" />
+          </>
+        )
+      }
+
+      {
+        icono === "pedidos" && (
+          <>
+            <path d="M3 4h2l3 12h10l3-9H6" />
+            <circle cx="9" cy="20" r="1" />
+            <circle cx="18" cy="20" r="1" />
+          </>
+        )
+      }
+
+      {
+        icono === "datos" && (
+          <>
+            <path d="M4 13h4v8H4zM10 8h4v13h-4zM16 3h4v18h-4z" />
+          </>
+        )
+      }
+    </svg>
+  </div>
+
+  <div class="contenido">
+    <h3>{nombre}</h3>
+    <p>{descripcion}</p>
+    <small>{categoria}</small>
+  </div>
+
+  <span class="estado">{estado}</span>
+</article>
+
+<style>
+  .tarjeta {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 18px;
+    padding: 20px;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    background: rgb(255 255 255 / 0.015);
+  }
+
+  .icono {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    color: #0f172a;
+  }
+
+  .menta {
+    background: #5eead4;
+  }
+
+  .azul {
+    background: #93c5fd;
+  }
+
+  .violeta {
+    background: #c4b5fd;
+  }
+
+  h3 {
+    margin: 0 0 6px;
+    color: var(--titulo);
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  p {
+    margin: 0 0 4px;
+    font-size: 0.9rem;
+  }
+
+  small {
+    font-size: 0.75rem;
+  }
+
+  .estado {
+    padding: 4px 10px;
+    border: 1px solid #526580;
+    border-radius: 7px;
+    color: var(--titulo);
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 1050px) {
+    .tarjeta {
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .icono {
+      width: 44px;
+      height: 44px;
+    }
+
+    .estado {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+</style>

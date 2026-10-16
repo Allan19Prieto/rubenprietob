@@ -1,0 +1,188 @@
+---
+interface Props {
+  titulo: string;
+  descripcion: string;
+}
+
+const { titulo, descripcion } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={descripcion} />
+    <title>{titulo} | Allan Prieto</title>
+  </head>
+
+  <body>
+    <div class="contenedor-blog">
+      <header class="cabecera-blog">
+        <a href="/" class="nombre">Allan Prieto</a>
+
+        <nav aria-label="Navegación del blog">
+          <a href="/">Portafolio</a>
+          <a href="/blog/">Blog</a>
+        </nav>
+      </header>
+
+      <main>
+        <slot />
+      </main>
+
+      <footer>Allan Prieto · Construyendo en público</footer>
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: dark;
+    --fondo: #0f172a;
+    --texto: #a9bad1;
+    --titulo: #f1f5f9;
+    --acento: #5eead4;
+    --borde: #26364e;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: system-ui, sans-serif;
+    line-height: 1.8;
+  }
+
+  .contenedor-blog {
+    max-width: 820px;
+    margin: auto;
+    padding: 32px 24px;
+  }
+
+  .cabecera-blog {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-bottom: 24px;
+    margin-bottom: 64px;
+    border-bottom: 1px solid var(--borde);
+  }
+
+  .nombre {
+    color: var(--titulo);
+    font-weight: 700;
+  }
+
+  nav {
+    display: flex;
+    gap: 24px;
+  }
+
+  a {
+    color: var(--acento);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 5px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: var(--titulo);
+    line-height: 1.25;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 6vw, 3rem);
+    letter-spacing: -0.04em;
+  }
+
+  .etiqueta {
+    color: var(--acento);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .lista-articulos {
+    list-style: none;
+    padding: 0;
+    margin-top: 40px;
+  }
+
+  .lista-articulos li {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--borde);
+  }
+
+  .lista-articulos h2 {
+    margin: 8px 0;
+    font-size: 1.4rem;
+  }
+
+  .lista-articulos p {
+    margin: 0;
+  }
+
+  time {
+    font-size: 0.85rem;
+  }
+
+  .articulo {
+    margin-top: 40px;
+    overflow-wrap: anywhere;
+  }
+
+  .articulo h2,
+  .articulo h3 {
+    margin-top: 40px;
+  }
+
+  .articulo a {
+    text-decoration: underline;
+  }
+
+  .articulo img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  .articulo pre {
+    padding: 20px;
+    border-radius: 10px;
+    overflow-x: auto;
+  }
+
+  .articulo blockquote {
+    margin-left: 0;
+    padding-left: 20px;
+    border-left: 3px solid var(--acento);
+  }
+
+  .volver {
+    display: inline-block;
+    margin-top: 48px;
+  }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--borde);
+    font-size: 0.8rem;
+  }
+</style>
