@@ -2,6 +2,7 @@
 import TarjetaProyecto from "../components/TarjetaProyecto.astro";
 import { proyectos } from "../data/proyectos";
 import Formularios from "../components/Formularios.astro";
+import Ingresos from "../components/Ingresos.astro";
 
 const secciones = [
 	{ id: "sobre-mi", nombre: "Sobre mí"},
@@ -49,16 +50,7 @@ const secciones = [
           }
         </nav>
 
-        <section class="ingresos" aria-labelledby="titulo-ingresos">
-          <h2 id="titulo-ingresos">Construyendo en público</h2>
-          <p class="monto">$ — USD</p>
-          <p>Ingresos acumulados</p>
-          <p class="descripcion-ingresos">
-            Documentando cuánto puede generar una persona
-            creando con tecnología.
-          </p>
-          <small>Cifra pendiente de actualizar</small>
-        </section>
+        <Ingresos />
       </aside>
 
       <main>
@@ -205,29 +197,6 @@ const secciones = [
 
   nav span {
     font-size: 0.8rem;
-  }
-
-  .ingresos {
-    padding: 24px;
-    border: 1px solid var(--borde);
-    border-radius: 12px;
-  }
-
-  .ingresos h2 {
-    margin-top: 0;
-    font-size: 1.15rem;
-  }
-
-  .ingresos p {
-    margin: 8px 0;
-  }
-
-  .ingresos .monto {
-    margin-top: 24px;
-    color: var(--acento);
-    font-size: 2.6rem;
-    font-weight: 750;
-    line-height: 1.2;
   }
 
   .descripcion-ingresos,

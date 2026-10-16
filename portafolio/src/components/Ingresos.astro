@@ -1,0 +1,211 @@
+---
+import { ingresos } from "../data/ingresos";
+
+for (const proyecto of ingresos.proyectos) {
+  if (
+    !Number.isFinite(proyecto.importeUSD) ||
+    proyecto.importeUSD < 0
+  ) {
+    throw new Error(
+      `El ingreso de "${proyecto.proyecto}" debe ser un número positivo o cero.`
+    );
+  }
+}
+
+// Sumamos en centavos para evitar errores habituales
+// de precisión al operar con cantidades decimales.
+const totalCentavos = ingresos.proyectos.reduce(
+  (total, proyecto) =>
+    total + Math.round(proyecto.importeUSD * 100),
+  0
+);
+
+const moneda = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+let fechaActualizacion: string | null = null;
+
+if (ingresos.datosConfirmados && ingresos.actualizadoEl) {
+  const fecha = new Date(`${ingresos.actualizadoEl}T00:00:00Z`);
+
+  if (Number.isNaN(fecha.getTime())) {
+    throw new Error("La fecha de ingresos no es válida.");
+  }
+
+  fechaActualizacion = new Intl.DateTimeFormat("es-CR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(fecha);
+}
+---
+
+<section class="panel-ingresos" aria-labelledby="titulo-ingresos">
+  <h2 id="titulo-ingresos">Construyendo en público</h2>
+
+  <div class="linea" aria-hidden="true"></div>
+
+  <p class="importe">
+    {
+      ingresos.datosConfirmados
+        ? moneda.format(totalCentavos / 100)
+        : "$ —"
+    }
+    <span>USD</span>
+  </p>
+
+  <p class="etiqueta">Ingresos acumulados</p>
+
+  <p class="descripcion">
+    Documentando cuánto puede generar una persona
+    creando con tecnología.
+  </p>
+
+  {
+    ingresos.datosConfirmados && ingresos.proyectos.length > 0 && (
+      <details class="desglose">
+        <summary>Ver ingresos por proyecto</summary>
+
+        <ul>
+          {ingresos.proyectos.map((proyecto) => (
+            <li>
+              <span>{proyecto.proyecto}</span>
+              <strong>{moneda.format(proyecto.importeUSD)}</strong>
+            </li>
+          ))}
+        </ul>
+      </details>
+    )
+  }
+
+  <div class="actualizacion">
+    {
+      ingresos.datosConfirmados ? (
+        fechaActualizacion ? (
+          <span>
+            Actualizado:{" "}
+            <time datetime={ingresos.actualizadoEl!}>
+              {fechaActualizacion}
+            </time>
+          </span>
+        ) : (
+          <span>Fecha de actualización pendiente</span>
+        )
+      ) : (
+        <span>Cifra pendiente de actualizar</span>
+      )
+    }
+  </div>
+
+  <small class="aclaracion">
+    Ingresos antes de descontar gastos e impuestos.
+  </small>
+</section>
+
+<style>
+  .panel-ingresos {
+    padding: 24px;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    background: rgb(255 255 255 / 0.015);
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--titulo);
+    font-size: 1.15rem;
+    line-height: 1.4;
+  }
+
+  .linea {
+    width: 32px;
+    height: 2px;
+    margin-top: 18px;
+    background: var(--acento);
+  }
+
+  .importe {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 22px 0 4px;
+    color: var(--acento);
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: 750;
+    line-height: 1.2;
+    letter-spacing: -0.04em;
+    overflow-wrap: anywhere;
+  }
+
+  .importe span {
+    font-size: 1rem;
+    letter-spacing: normal;
+  }
+
+  .etiqueta {
+    margin: 0;
+    color: var(--titulo);
+    font-size: 0.95rem;
+  }
+
+  .descripcion {
+    margin: 20px 0;
+    font-size: 0.85rem;
+  }
+
+  .desglose {
+    margin: 20px 0;
+    font-size: 0.8rem;
+  }
+
+  summary {
+    color: var(--acento);
+    cursor: pointer;
+  }
+
+  summary:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 5px;
+  }
+
+  ul {
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--borde);
+  }
+
+  strong {
+    color: var(--titulo);
+    white-space: nowrap;
+  }
+
+  .actualizacion {
+    padding: 12px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: #142033;
+    font-size: 0.75rem;
+  }
+
+  .aclaracion {
+    display: block;
+    margin-top: 14px;
+    font-size: 0.7rem;
+    line-height: 1.6;
+  }
+</style>
