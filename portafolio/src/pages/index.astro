@@ -1,4 +1,10 @@
 ---
+const secciones = [
+	{ id: "sobre-mi", nombre: "Sobre mí"},
+	{ id: "proyectos", nombre: "Proyectos"},
+	{ id: "blog", nombre: "Blog" },
+	{ id: "contacto", nombre: "Contacto" },
+]
 ---
 
 <html lang="en">
@@ -7,10 +13,254 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content="Proyectos, automatización y aprendizajes de Allan Ruben Prieto." />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>Allan Prieto | Proyectos y tecnologías</title>
 	</head>
 	<body>
-		<h1>Astro</h1>
-	</body>
+    <div class="portafolio">
+      <aside class="perfil">
+        <header>
+          <h1>Allan Prieto</h1>
+          <a class="enlace-blog" href="#blog">Leer mi blog →</a>
+
+          <p class="profesion">
+            Desarrollador & creador de productos
+          </p>
+
+          <p class="presentacion">
+            Construyo aplicaciones, automatizaciones y herramientas
+            para resolver problemas reales.
+          </p>
+        </header>
+
+        <nav aria-label="Navegación principal">
+          {
+            secciones.map((seccion, indice) => (
+              <a href={`#${seccion.id}`}>
+                <span>{String(indice + 1).padStart(2, "0")}</span>
+                {seccion.nombre}
+              </a>
+            ))
+          }
+        </nav>
+
+        <section class="ingresos" aria-labelledby="titulo-ingresos">
+          <h2 id="titulo-ingresos">Construyendo en público</h2>
+          <p class="monto">$ — USD</p>
+          <p>Ingresos acumulados</p>
+          <p class="descripcion-ingresos">
+            Documentando cuánto puede generar una persona
+            creando con tecnología.
+          </p>
+          <small>Cifra pendiente de actualizar</small>
+        </section>
+      </aside>
+
+      <main>
+        <section id="sobre-mi">
+          <h2 class="titular">
+            Ideas que se convierten en herramientas.
+          </h2>
+          <p>
+            Me interesa conectar software, datos y procesos.
+            Este es mi espacio para compartir lo que construyo
+            y lo que voy aprendiendo.
+          </p>
+        </section>
+
+        <section id="proyectos">
+          <h2>Proyectos & productos</h2>
+          <p>Aquí vamos a presentar los proyectos y su evolución.</p>
+        </section>
+
+        <section id="blog">
+          <h2>Notas del camino</h2>
+          <p>
+            Mi blog sobre tecnología, productos y aprendizajes.
+            Próximamente.
+          </p>
+        </section>
+
+        <section id="contacto">
+          <h2>¿En qué puedo ayudarte?</h2>
+          <p>Desarrollo web · Automatización · Análisis de datos</p>
+          <p>Aquí incorporaremos el formulario de contacto.</p>
+        </section>
+
+        <section id="retroalimentacion">
+          <h2>Tu opinión mejora mis proyectos</h2>
+          <p>Aquí podrás compartir comentarios y sugerencias.</p>
+        </section>
+
+        <footer>Allan Prieto · Construyendo en público</footer>
+      </main>
+    </div>
+  </body>
 </html>
+
+<style is:global>
+  :root {
+    color-scheme: dark;
+    --fondo: #0f172a;
+    --texto: #a9bad1;
+    --titulo: #f1f5f9;
+    --acento: #5eead4;
+    --borde: #26364e;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--texto);
+    font-family: system-ui, sans-serif;
+    line-height: 1.7;
+  }
+
+  a {
+    color: var(--acento);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 6px;
+  }
+
+  h1,
+  h2 {
+    color: var(--titulo);
+    line-height: 1.2;
+  }
+
+  h1 {
+    margin: 0 0 12px;
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    letter-spacing: -0.05em;
+  }
+
+  h2 {
+    font-size: 1.65rem;
+  }
+
+  .portafolio {
+    max-width: 1240px;
+    margin: auto;
+    padding: 72px 40px;
+    display: grid;
+    grid-template-columns: minmax(0, 350px) minmax(0, 1fr);
+    gap: 80px;
+  }
+
+  .perfil {
+    align-self: start;
+  }
+
+  .enlace-blog {
+    font-weight: 600;
+  }
+
+  .profesion {
+    margin-top: 16px;
+  }
+
+  .presentacion {
+    margin-top: 32px;
+  }
+
+  nav {
+    display: grid;
+    gap: 18px;
+    margin: 44px 0;
+  }
+
+  nav a {
+    display: flex;
+    gap: 24px;
+    color: var(--texto);
+  }
+
+  nav a:hover,
+  nav span {
+    color: var(--acento);
+  }
+
+  nav span {
+    font-size: 0.8rem;
+  }
+
+  .ingresos {
+    padding: 24px;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+  }
+
+  .ingresos h2 {
+    margin-top: 0;
+    font-size: 1.15rem;
+  }
+
+  .ingresos p {
+    margin: 8px 0;
+  }
+
+  .ingresos .monto {
+    margin-top: 24px;
+    color: var(--acento);
+    font-size: 2.6rem;
+    font-weight: 750;
+    line-height: 1.2;
+  }
+
+  .descripcion-ingresos,
+  small {
+    font-size: 0.85rem;
+  }
+
+  main section {
+    padding-bottom: 36px;
+    margin-bottom: 36px;
+    border-bottom: 1px solid var(--borde);
+    scroll-margin-top: 32px;
+  }
+
+  .titular {
+    margin-top: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.04em;
+  }
+
+  footer {
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 800px) {
+    .portafolio {
+      grid-template-columns: 1fr;
+      gap: 48px;
+      padding: 40px 24px;
+    }
+
+    nav {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+</style>
