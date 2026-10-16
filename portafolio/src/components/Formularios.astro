@@ -1,0 +1,228 @@
+---
+import { proyectos } from "../data/proyectos";
+---
+
+<section id="contacto">
+  <h2>¿En qué puedo ayudarte?</h2>
+
+  <p class="servicios">
+    Desarrollo web · Automatización · Análisis de datos
+  </p>
+
+  <p>Dejame tu correo y te contacto.</p>
+
+  <form
+    name="contacto"
+    method="POST"
+    action="/gracias/"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+  >
+    <input type="hidden" name="form-name" value="contacto" />
+
+    <p hidden>
+      <label>
+        No completes este campo:
+        <input name="bot-field" tabindex="-1" autocomplete="off" />
+      </label>
+    </p>
+
+    <label for="correo-contacto">Tu correo electrónico</label>
+
+    <div class="fila-contacto">
+      <input
+        id="correo-contacto"
+        name="email"
+        type="email"
+        placeholder="nombre@ejemplo.com"
+        autocomplete="email"
+        maxlength="254"
+        required
+        aria-describedby="uso-correo"
+      />
+
+      <button type="submit">Quiero conversar</button>
+    </div>
+
+    <small id="uso-correo">
+      Usaré tu correo para responder a tu solicitud.
+    </small>
+  </form>
+</section>
+
+<section id="retroalimentacion">
+  <h2>Tu opinión mejora mis proyectos</h2>
+  <p>Contame qué funciona y qué podría mejorar.</p>
+
+  <form
+    name="retroalimentacion"
+    method="POST"
+    action="/gracias/"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+  >
+    <input
+      type="hidden"
+      name="form-name"
+      value="retroalimentacion"
+    />
+
+    <p hidden>
+      <label>
+        No completes este campo:
+        <input name="bot-field" tabindex="-1" autocomplete="off" />
+      </label>
+    </p>
+
+    <div class="campo">
+      <label for="proyecto-feedback">Proyecto</label>
+
+      <select id="proyecto-feedback" name="proyecto" required>
+        <option value="" selected disabled>
+          Seleccioná un proyecto
+        </option>
+
+        {
+          proyectos.map((proyecto) => (
+            <option value={proyecto.nombre}>
+              {proyecto.nombre}
+            </option>
+          ))
+        }
+
+        <option value="Portafolio">Este portafolio</option>
+      </select>
+    </div>
+
+    <div class="campo">
+      <label for="comentario-feedback">Tu comentario</label>
+
+      <textarea
+        id="comentario-feedback"
+        name="comentario"
+        rows="5"
+        minlength="10"
+        maxlength="3000"
+        placeholder="Escribí tu comentario o sugerencia…"
+        required
+      ></textarea>
+    </div>
+
+    <div class="campo">
+      <label for="correo-feedback">
+        Tu correo electrónico (opcional)
+      </label>
+
+      <input
+        id="correo-feedback"
+        name="email"
+        type="email"
+        autocomplete="email"
+        maxlength="254"
+        placeholder="Por si querés que te responda"
+      />
+    </div>
+
+    <button class="boton-secundario" type="submit">
+      Enviar retroalimentación
+    </button>
+  </form>
+</section>
+
+<style>
+  .servicios {
+    font-size: 0.9rem;
+  }
+
+  form {
+    margin-top: 24px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--titulo);
+    font-size: 0.9rem;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    padding: 14px 16px;
+    border: 1px solid #526580;
+    border-radius: 8px;
+    background: #142033;
+    color: var(--titulo);
+    font: inherit;
+    font-size: 0.9rem;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--texto);
+    opacity: 1;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 140px;
+  }
+
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 3px;
+  }
+
+  .fila-contacto {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .campo {
+    margin-bottom: 22px;
+  }
+
+  button {
+    padding: 14px 20px;
+    border: 1px solid var(--acento);
+    border-radius: 8px;
+    background: var(--acento);
+    color: var(--fondo);
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 650;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #99f6e4;
+  }
+
+  .boton-secundario {
+    background: transparent;
+    color: var(--acento);
+  }
+
+  .boton-secundario:hover {
+    background: rgb(94 234 212 / 0.08);
+  }
+
+  small {
+    display: block;
+    margin-top: 12px;
+    font-size: 0.75rem;
+  }
+
+  @media (max-width: 1050px) {
+    .fila-contacto {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
