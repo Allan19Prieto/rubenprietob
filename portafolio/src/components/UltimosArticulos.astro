@@ -1,0 +1,140 @@
+---
+import { getCollection } from "astro:content";
+
+const articulos = (
+  await getCollection("blog", ({ data }) => !data.borrador)
+)
+  .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime())
+  .slice(0, 3);
+---
+
+<section id="blog">
+  <div class="cabecera">
+    <h2>Notas del camino</h2>
+    <a class="ver-blog" href="/blog/">Ver el blog →</a>
+  </div>
+
+  {
+    articulos.length > 0 ? (
+      <ul>
+        {articulos.map((articulo) => (
+          <li>
+            <a class="articulo" href={`/blog/${articulo.id}/`}>
+              <div>
+                <h3>{articulo.data.titulo}</h3>
+                <p>{articulo.data.descripcion}</p>
+              </div>
+
+              <span class="flecha" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>Estoy preparando mis primeras publicaciones.</p>
+    )
+  }
+</section>
+
+<style>
+  .cabecera {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  .ver-blog {
+    font-size: 0.85rem;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li + li {
+    border-top: 1px solid var(--borde);
+  }
+
+  .articulo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 22px 8px;
+    border-radius: 6px;
+    color: var(--texto);
+    text-decoration: none;
+    transition: background 180ms ease;
+  }
+
+  .articulo:hover {
+    background: rgb(94 234 212 / 0.04);
+    text-decoration: none;
+  }
+
+  h3 {
+    margin: 0 0 6px;
+    color: var(--titulo);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .articulo:hover h3 {
+    color: var(--acento);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.85rem;
+  }
+
+  .flecha {
+    color: var(--acento);
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .articulo {
+      transition: none;
+    }
+  }
+
+  .articulo {
+  border: 1px solid transparent;
+
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.articulo:hover,
+.articulo:focus-visible {
+  background-color: rgba(148, 163, 184, 0.07);
+  border-color: rgba(94, 234, 212, 0.2);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 10px 25px -18px rgba(0, 0, 0, 0.6);
+}
+
+.articulo:hover h3,
+.articulo:focus-visible h3 {
+  color: var(--acento);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .articulo {
+    transition: none;
+  }
+}
+</style>

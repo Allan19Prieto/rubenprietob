@@ -3,6 +3,7 @@ import TarjetaProyecto from "../components/TarjetaProyecto.astro";
 import { proyectos } from "../data/proyectos";
 import Formularios from "../components/Formularios.astro";
 import Ingresos from "../components/Ingresos.astro";
+import UltimosArticulos from "../components/UltimosArticulos.astro";
 
 const secciones = [
 	{ id: "sobre-mi", nombre: "Sobre mí"},
@@ -23,6 +24,7 @@ const secciones = [
 		<title>Allan Prieto | Proyectos y tecnologías</title>
 	</head>
 	<body>
+    <div class="resplandor-cursor" aria-hidden="true"></div>
     <div class="portafolio">
       <aside class="perfil">
         <header>
@@ -80,14 +82,7 @@ const secciones = [
           </div>
         </section>
 
-        <section id="blog">
-          <h2>Notas del camino</h2>
-          <p>
-            Comparto mis proyectos, aprendizajes y experiencias
-            creando con tecnología.
-          </p>
-          <a href="/blog/">Explorar el blog →</a>
-        </section>
+        <UltimosArticulos />
 
         <Formularios />
 
@@ -96,6 +91,122 @@ const secciones = [
     </div>
   </body>
 </html>
+
+<script>
+  const enlaces = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>(
+      '.perfil nav a[href^="#"]'
+    )
+  );
+
+  const destinos = enlaces.flatMap((enlace) => {
+    const id = enlace.hash.slice(1);
+    const seccion = document.getElementById(id);
+
+    return seccion ? [{ enlace, seccion }] : [];
+  });
+
+  function actualizarSeccionActiva() {
+    if (destinos.length === 0) return;
+
+    const referencia = window.innerHeight * 0.35;
+    let activo = destinos[0];
+
+    for (const destino of destinos) {
+      if (destino.seccion.getBoundingClientRect().top <= referencia) {
+        activo = destino;
+      }
+    }
+
+    for (const destino of destinos) {
+      if (destino === activo) {
+        destino.enlace.setAttribute("aria-current", "location");
+      } else {
+        destino.enlace.removeAttribute("aria-current");
+      }
+    }
+  }
+
+  let actualizacionPendiente = false;
+
+  function solicitarActualizacion() {
+    if (actualizacionPendiente) return;
+
+    actualizacionPendiente = true;
+
+    requestAnimationFrame(() => {
+      actualizarSeccionActiva();
+      actualizacionPendiente = false;
+    });
+  }
+
+  window.addEventListener("scroll", solicitarActualizacion, {
+    passive: true,
+  });
+
+  window.addEventListener("resize", solicitarActualizacion);
+  window.addEventListener("load", solicitarActualizacion);
+
+  actualizarSeccionActiva();
+</script>
+
+<script>
+  const resplandor = document.querySelector<HTMLElement>(
+    ".resplandor-cursor"
+  );
+
+  const permitirEfecto = window.matchMedia(
+    "(hover: hover) and (pointer: fine) and " +
+    "(prefers-reduced-motion: no-preference)"
+  );
+
+  if (resplandor) {
+    let posicionX = 0;
+    let posicionY = 0;
+    let cuadroPendiente = false;
+
+    document.addEventListener(
+      "pointermove",
+      (evento) => {
+        if (!permitirEfecto.matches) return;
+
+        posicionX = evento.clientX;
+        posicionY = evento.clientY;
+
+        resplandor.classList.add("visible");
+
+        if (cuadroPendiente) return;
+
+        cuadroPendiente = true;
+
+        requestAnimationFrame(() => {
+          resplandor.style.setProperty(
+            "--cursor-x",
+            `${posicionX}px`
+          );
+
+          resplandor.style.setProperty(
+            "--cursor-y",
+            `${posicionY}px`
+          );
+
+          cuadroPendiente = false;
+        });
+      },
+      { passive: true }
+    );
+
+    document.documentElement.addEventListener(
+      "pointerleave",
+      () => resplandor.classList.remove("visible")
+    );
+
+    window.addEventListener(
+      "blur",
+      () => resplandor.classList.remove("visible")
+    );
+  }
+</script>
 
 <style is:global>
   :root {
@@ -261,5 +372,146 @@ const secciones = [
 .lista-proyectos {
   display: grid;
   gap: 14px;
+}
+
+/* Ajustes de la portada */
+.portafolio {
+  max-width: 1360px;
+  column-gap: clamp(40px, 6vw, 88px);
+}
+
+.perfil {
+  min-width: 0;
+}
+
+.portafolio > main {
+  min-width: 0;
+}
+
+.perfil nav a {
+  align-items: center;
+  transition: color 180ms ease;
+}
+
+.perfil nav a::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: var(--texto);
+  transition: width 180ms ease, background 180ms ease;
+}
+
+.perfil nav a:hover,
+.perfil nav a[aria-current="location"] {
+  color: var(--titulo);
+  text-decoration: none;
+}
+
+.perfil nav a:hover::before,
+.perfil nav a[aria-current="location"]::before {
+  width: 40px;
+  background: var(--acento);
+}
+
+.portafolio > main > section {
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+}
+
+
+
+@media (max-width: 800px) {
+  .portafolio {
+    padding: 36px 22px;
+    gap: 48px;
+  }
+
+  .perfil nav {
+    gap: 18px 12px;
+  }
+
+  .perfil nav a {
+    gap: 10px;
+  }
+
+  .perfil nav a::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .perfil nav a,
+  .perfil nav a::before {
+    transition: none;
+  }
+}
+
+/* Panel izquierdo visible durante el desplazamiento */
+@media (min-width: 801px) {
+  .perfil {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+
+    max-height: calc(100dvh - 48px);
+    overflow-y: auto;
+
+    padding-right: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--borde) transparent;
+  }
+
+  .perfil nav {
+    margin: 28px 0;
+    gap: 14px;
+  }
+
+  .perfil .presentacion {
+    margin-top: 22px;
+  }
+}
+
+/* En celular conservamos el desplazamiento normal */
+@media (max-width: 800px) {
+  .perfil {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+}
+
+.resplandor-cursor {
+  display: none;
+}
+
+.portafolio {
+  position: relative;
+  z-index: 1;
+}
+
+/* Solo dispositivos con mouse y sin movimiento reducido */
+@media (hover: hover) and (pointer: fine) and
+  (prefers-reduced-motion: no-preference) {
+  .resplandor-cursor {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+
+    background: radial-gradient(
+      650px circle at var(--cursor-x, 50%) var(--cursor-y, 35%),
+      rgba(29, 78, 216, 0.16),
+      transparent 80%
+    );
+
+    opacity: 0;
+    transition: opacity 250ms ease;
+  }
+
+  .resplandor-cursor.visible {
+    opacity: 1;
+  }
 }
 </style>
