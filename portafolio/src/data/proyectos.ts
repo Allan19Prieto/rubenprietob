@@ -16,11 +16,12 @@ export const proyectos = [
     color: "azul",
   },
   {
-    nombre: "Observatorio de precios",
-    descripcion: "Datos de Precios agrícolas para entender el mercado Costarricense.",
-    categoria: "Datos · Agricultura",
-    estado: "Propuesta",
+    nombre: "Pizarra GRO",
+    descripcion: "Herramienta web para organizar y visualizar información.",
+    categoria: "Aplicación web · Datos",
+    estado: "Disponible",
     icono: "datos",
     color: "violeta",
+    enlace: "https://pizarra-api.allanbanilla.workers.dev/",
   },
 ];
