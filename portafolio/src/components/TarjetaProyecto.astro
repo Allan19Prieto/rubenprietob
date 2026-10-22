@@ -33,7 +33,18 @@ const estadoClase = estado
   .replace(/\s+/g, "-");
 ---
 
-<article class="tarjeta">
+<article class="tarjeta" >
+  {
+    enlace && (
+      <a
+        class="enlace-tarjeta"
+        href={enlace}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={`Abrir proyecto ${nombre}`}
+      />
+    )
+  }
   <div class:list={["icono", color]} aria-hidden="true">
     <svg
       width="26"
@@ -75,15 +86,7 @@ const estadoClase = estado
   </div>
 
   <div class="contenido">
-    <h3>
-      {enlace ? (
-        <a href={enlace} target="_blank" rel="noreferrer">
-          {nombre}
-        </a>
-      ) : (
-        nombre
-      )}
-    </h3>
+    <h3>{nombre}</h3>
     <p>{descripcion}</p>
     <div class="metadatos">
       <small>{categoria}</small>
@@ -247,5 +250,25 @@ const estadoClase = estado
   justify-content: center;
   width: 22px;
   height: 22px;
+}
+
+/* Enlaces de la tarjeta */
+.tarjeta {
+  position: relative;
+}
+
+.enlace-tarjeta {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.contenido,
+.icono,
+.estado {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
 }
 </style>
