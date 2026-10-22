@@ -9,8 +9,8 @@ export const proyectos = [
         icono: "logos:vitejs",
       },
       {
-        nombre: "Tailwind CSS",
-        icono: "logos:tailwindcss-icon",
+        nombre: "TypeScript",
+        icono: "logos:typescript",
       },
       {
         nombre: "React",
