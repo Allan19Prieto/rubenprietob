@@ -1,9 +1,41 @@
 export const proyectos = [
   {
+    nombre: "Pizarra GRO",
+    descripcion: "Herramienta web para visualizar los precios de productos agricolas en Costa Rica.",
+    categoria: "Aplicación web · Datos",
+    tecnologias: [
+      {
+        nombre: "Vite",
+        icono: "logos:vitejs",
+      },
+      {
+        nombre: "Tailwind CSS",
+        icono: "logos:tailwindcss-icon",
+      },
+      {
+        nombre: "React",
+        icono: "logos:react",
+      },
+      {
+        nombre: "Python",
+        icono: "logos:python",
+      },
+      {
+        nombre: "PostgreSQL",
+        icono: "logos:postgresql",
+      }
+    ],
+    estado: "Disponible",
+    icono: "datos",
+    color: "violeta",
+    enlace: "https://pizarra-api.allanbanilla.workers.dev/",
+  },
+  {
     nombre: "Bot de facturas",
     descripcion: "Seguimiento de documentos y tareas pendientes.",
     categoria: "Automatización · Finanzas",
-    estado: "Propuesta",
+    tecnologias: [],
+    estado: "Propuesto",
     icono: "documento",
     color: "menta",
   },
@@ -11,17 +43,9 @@ export const proyectos = [
     nombre: "Pedidos para distribuidores",
     descripcion: "Un lugar para organizar pedidos y entregas.",
     categoria: "Aplicación web · Operaciones",
-    estado: "Propuesta",
+    tecnologias: [],
+    estado: "Propuesto",
     icono: "pedidos",
     color: "azul",
-  },
-  {
-    nombre: "Pizarra GRO",
-    descripcion: "Herramienta web para organizar y visualizar información.",
-    categoria: "Aplicación web · Datos",
-    estado: "Disponible",
-    icono: "datos",
-    color: "violeta",
-    enlace: "https://pizarra-api.allanbanilla.workers.dev/",
   },
 ];
